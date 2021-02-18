@@ -55,8 +55,8 @@ print('Queries analyzed:',queriesAnalyzed)
 
 print()
 print('Aligning nucleotide sequences...')
-#command='muscle -in '+args.output+'_regions.fa'+' -out '+args.output+'_regions_aligned.fa'+' -diags -maxiters 2'
-#subprocess.call(command,shell=True)
+command='muscle -in '+args.output+'_regions.fa'+' -out '+args.output+'_regions_aligned.fa'+' -diags -maxiters 2'
+subprocess.call(command,shell=True)
 
 ntAlignments={}
 with open(args.output+'_regions_aligned.fa') as inputFile:
@@ -126,8 +126,8 @@ outputFile.close()
 
 print()
 print('Aligning amino acid sequences...')
-#command='muscle -in '+args.output+'_ORFs.fa'+' -out '+args.output+'_ORFs_aligned.fa'+' -maxiters 2 -seqtype protein'
-#subprocess.call(command,shell=True)                                                                                                                                                                     
+command='muscle -in '+args.output+'_ORFs.fa'+' -out '+args.output+'_ORFs_aligned.fa'+' -maxiters 2 -seqtype protein'
+subprocess.call(command,shell=True)                                                                                                                                                                     
 
 aaAlignments={}
 with open(args.output+'_ORFs_aligned.fa') as inputFile:
