@@ -14,7 +14,7 @@ import pandas as pd
 parser=argparse.ArgumentParser()
 parser.add_argument("-i", "--input", type=str, required=True, help="input FASTA file")
 parser.add_argument("-r", "--reference", type=str, required=True, help="referene sequence in FASTA format")
-parser.add_argument("-s", "--span", type=str, required=True, help="nucleotide positions (1-indexed) of ORF (start-end)")
+parser.add_argument("-c", "--coord", type=str, required=True, help="nucleotide positions (1-indexed) of ORF (start-end)")
 parser.add_argument("-o", "--output", type=str, required=True, help="short description to append to output files")
 args=parser.parse_args()
 
@@ -35,8 +35,8 @@ refHeader,refSeq=list(refSeqs.items())[0]
 print()
 print('Reference:',refHeader.lstrip('>'))
 
-ORF_start=int(args.span.split('-')[0])
-ORF_end=int(args.span.split('-')[1])
+ORF_start=int(args.coord.split('-')[0])
+ORF_end=int(args.coord.split('-')[1])
 print('ORF coordinates:',ORF_start,'-',ORF_end)
 
 start=max([1,ORF_start-1-200])
@@ -59,8 +59,10 @@ outputFile=open(args.output+'_regions.fa','w')
 outputFile.write(refHeader+'\n')
 outputFile.write(refSeq[start:end]+'\n')
 for header,sequence in ntSeqs.items():
-    outputFile.write(header+'\n')
-    outputFile.write(sequence[start:end]+'\n')
+    totalCanonicalBases=sequence[start:end].count('A')+sequence[start:end].count('T')+sequence[start:end].count('G')+sequence[start:end].count('C')
+    if len(sequence[start:end])==totalCanonicalBases:
+        outputFile.write(header+'\n')
+        outputFile.write(sequence[start:end]+'\n')
 outputFile.close()
 
 print()
